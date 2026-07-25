@@ -16,7 +16,8 @@
       "browser": "./dist/index.js",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
