@@ -41,6 +41,20 @@ describe("createId()", () => {
     expect(withDot("order").startsWith("order.")).toBe(true);
   });
 
+  it("carries a custom separator through to the value type", () => {
+    const gen = createId({ separator: "-" });
+    const value = gen("user");
+    const typed: `user-${string}` = value;
+    expect(typed.startsWith("user-")).toBe(true);
+  });
+
+  it("does not type a custom-separator id as underscore-separated", () => {
+    const value = createId({ separator: "-" })("user");
+    // @ts-expect-error
+    const wrong: `user_${string}` = value;
+    expect(wrong.startsWith("user-")).toBe(true);
+  });
+
   it("respects a custom alphabet", () => {
     const binary = createId({ alphabet: "01", size: 12 });
     const random = binary("bit").slice("bit_".length);

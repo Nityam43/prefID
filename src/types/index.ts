@@ -1,4 +1,7 @@
-export type PrefixedId<P extends string = string> = `${P}_${string}`;
+export type PrefixedId<
+  P extends string = string,
+  S extends string = "_",
+> = `${P}${S}${string}`;
 
 export interface IdOptions {
   size?: number;
@@ -6,4 +9,6 @@ export interface IdOptions {
   alphabet?: string;
 }
 
-export type IdGenerator = <P extends string>(prefix: P) => PrefixedId<P>;
+export type IdGenerator<S extends string = "_"> = <P extends string>(
+  prefix: P,
+) => PrefixedId<P, S>;

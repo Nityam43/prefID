@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-07-25
+
+First stable release. The public API is now considered stable and follows
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html): breaking changes
+will only ship in a new major version.
+
+### Added
+
+- `getTimestampOrThrow(id, options?)` — the strict companion to `getTimestamp`.
+  Returns a `number` and throws a `TypeError` when the value is not a
+  well-formed sortable id, so callers who want a loud failure (rather than
+  branching on `undefined`) get one without writing the guard themselves.
+- `getDate(id, options?)` — decode a sortable id's embedded timestamp straight
+  to a `Date` (or `undefined` when it is not a well-formed sortable id). A thin
+  convenience over `getTimestamp`.
+
+### Fixed
+
+- **Custom separators are now type-sound.** `PrefixedId` gained a second type
+  parameter for the separator (`PrefixedId<P, S>`, defaulting to `"_"`), and
+  `createId` / `createSortableId` thread the literal separator through to the
+  value's type. Previously a generator built with `createId({ separator: "-" })`
+  still typed its output as `` `${P}_${string}` `` even though the runtime value
+  used `-`. `isId(value, prefix, separator)` likewise now narrows to the correct
+  separator. Custom placeholders in `template()` are handled the same way, so a
+  non-`#` placeholder keeps the precise literal-prefix type instead of widening
+  to `string`.
+
+### Changed
+
+- The default `_` separator is unchanged, so existing code and the `PrefixedId<P>`
+  / `IdGenerator` / `IdOptions` / `TemplateOptions` types keep their previous
+  meaning. The only visible difference is that generators and guards created with
+  a **non-default** separator now carry that separator in their types — which may
+  surface a (correct) type error in code that previously relied on the mismatched
+  `_` type.
+
 ## [0.4.0] - 2026-07-22
 
 ### Added
@@ -94,7 +131,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cryptographically secure random source with unbiased sampling and a Node
   `crypto` fallback for runtimes without the Web Crypto global.
 
-[Unreleased]: https://github.com/suhailopensource/prefID/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/suhailopensource/prefID/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/suhailopensource/prefID/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/suhailopensource/prefID/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/suhailopensource/prefID/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/suhailopensource/prefID/compare/v0.1.0...v0.2.0

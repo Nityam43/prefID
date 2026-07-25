@@ -76,4 +76,10 @@ describe("template()", () => {
     const typed: `user_${string}` = value;
     expect(typed.startsWith("user_")).toBe(true);
   });
+
+  it("preserves the literal prefix in the type with a custom placeholder", () => {
+    const value = template("room-***", { placeholder: "*" })();
+    const typed: `room-${string}` = value;
+    expect(typed.startsWith("room-")).toBe(true);
+  });
 });

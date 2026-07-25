@@ -28,6 +28,14 @@ describe("isId()", () => {
       expect(typed.startsWith("user_")).toBe(true);
     }
   });
+
+  it("narrows to the custom-separator type", () => {
+    const value: unknown = "user-abc123";
+    if (isId(value, "user", "-")) {
+      const typed: PrefixedId<"user", "-"> = value;
+      expect(typed.startsWith("user-")).toBe(true);
+    }
+  });
 });
 
 describe("getPrefix()", () => {

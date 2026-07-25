@@ -3,8 +3,10 @@ import {
   createId,
   createSortableId,
   ensureUnique,
+  getDate,
   getPrefix,
   getTimestamp,
+  getTimestampOrThrow,
   id,
   isId,
   sortableId,
@@ -61,6 +63,28 @@ assert(
   getTimestamp(fixedClock("t")) === 1_700_000_000_000,
   "getTimestamp() should round-trip the generating time",
 );
+assert(
+  getTimestampOrThrow(fixedClock("t")) === 1_700_000_000_000,
+  "getTimestampOrThrow() should round-trip the generating time",
+);
+assert(
+  getDate(fixedClock("t")).getTime() === 1_700_000_000_000,
+  "getDate() should decode the generating time as a Date",
+);
+let threw = false;
+try {
+  getTimestampOrThrow("not-a-sortable-id-@");
+} catch {
+  threw = true;
+}
+assert(threw, "getTimestampOrThrow() should throw on malformed input");
+
+const dashed = createId({ separator: "-" })("user");
+assert(
+  dashed.startsWith("user-"),
+  "custom separator should appear in the value",
+);
+assert(isId(dashed, "user", "-"), "isId() should honour a custom separator");
 
 // Crockford base32 preset: no ambiguous letters, works everywhere.
 assert(BASE32_CROCKFORD.length === 32, "BASE32_CROCKFORD should have 32 chars");

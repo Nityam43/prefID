@@ -3,8 +3,10 @@ import {
   BASE32_CROCKFORD,
   createId,
   createSortableId,
+  getDate,
   getPrefix,
   getTimestamp,
+  getTimestampOrThrow,
   isId,
   type PrefixedId,
   sortableId,
@@ -295,5 +297,55 @@ describe("createSortableId() — validation", () => {
   it("rejects a negative clock reading", () => {
     const gen = createSortableId({ now: () => -1 });
     expect(() => gen("u")).toThrow(RangeError);
+  });
+});
+
+describe("createSortableId() — custom separator type", () => {
+  it("carries a custom separator through to the value type", () => {
+    const gen = createSortableId({ separator: "-", now: () => 1 });
+    const value = gen("evt");
+    const typed: `evt-${string}` = value;
+    expect(typed.startsWith("evt-")).toBe(true);
+  });
+});
+
+describe("getTimestampOrThrow()", () => {
+  it("returns the embedded timestamp for a valid sortable id", () => {
+    const gen = createSortableId({ now: () => 1_700_000_000_000 });
+    expect(getTimestampOrThrow(gen("evt"))).toBe(1_700_000_000_000);
+  });
+
+  it("returns a plain number (never undefined) to the caller", () => {
+    const ts: number = getTimestampOrThrow(sortableId("evt"));
+    expect(typeof ts).toBe("number");
+  });
+
+  it("throws on a value that is not a well-formed sortable id", () => {
+    expect(() => getTimestampOrThrow("nope")).toThrow(TypeError);
+    expect(() => getTimestampOrThrow("evt_")).toThrow(TypeError);
+  });
+
+  it("throws on a non-string value at runtime", () => {
+    // @ts-expect-error
+    expect(() => getTimestampOrThrow(42)).toThrow(TypeError);
+  });
+});
+
+describe("getDate()", () => {
+  it("returns a Date matching the embedded timestamp", () => {
+    const gen = createSortableId({ now: () => 1_700_000_000_000 });
+    const date = getDate(gen("evt"));
+    expect(date).toBeInstanceOf(Date);
+    expect(date?.getTime()).toBe(1_700_000_000_000);
+  });
+
+  it("round-trips with getTimestamp", () => {
+    const sid = sortableId("evt");
+    expect(getDate(sid)?.getTime()).toBe(getTimestamp(sid));
+  });
+
+  it("returns undefined for a value that is not a well-formed sortable id", () => {
+    expect(getDate("nope")).toBeUndefined();
+    expect(getDate("evt_")).toBeUndefined();
   });
 });

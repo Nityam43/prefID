@@ -2,7 +2,9 @@ export { BASE32_CROCKFORD } from "./constants/index.js";
 export { createId, id } from "./generators/generate.js";
 export {
   createSortableId,
+  getDate,
   getTimestamp,
+  getTimestampOrThrow,
   sortableId,
 } from "./generators/sortable.js";
 export { template } from "./generators/template.js";

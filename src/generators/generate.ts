@@ -8,7 +8,9 @@ import { assertValidPrefix } from "../internal/prefix.js";
 import { randomString } from "../internal/random.js";
 import type { IdGenerator, IdOptions, PrefixedId } from "../types/index.js";
 
-export function createId(defaults: IdOptions = {}): IdGenerator {
+export function createId<S extends string = "_">(
+  defaults: IdOptions & { separator?: S } = {},
+): IdGenerator<S> {
   const size = defaults.size ?? DEFAULT_SIZE;
   const separator = defaults.separator ?? DEFAULT_SEPARATOR;
   const alphabet = defaults.alphabet ?? DEFAULT_ALPHABET;
@@ -27,9 +29,12 @@ export function createId(defaults: IdOptions = {}): IdGenerator {
     throw new TypeError("prefid: `separator` must be a non-empty string.");
   }
 
-  return function id<P extends string>(prefix: P): PrefixedId<P> {
+  return function id<P extends string>(prefix: P): PrefixedId<P, S> {
     assertValidPrefix(prefix, separator);
-    return `${prefix}${separator}${randomString(alphabet, size)}` as PrefixedId<P>;
+    return `${prefix}${separator}${randomString(alphabet, size)}` as PrefixedId<
+      P,
+      S
+    >;
   };
 }
 

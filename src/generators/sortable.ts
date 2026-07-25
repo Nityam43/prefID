@@ -99,7 +99,9 @@ function assertSize(value: number, name: string): void {
   }
 }
 
-export function createSortableId(options: SortableIdOptions = {}): IdGenerator {
+export function createSortableId<S extends string = "_">(
+  options: SortableIdOptions & { separator?: S } = {},
+): IdGenerator<S> {
   const separator = options.separator ?? DEFAULT_SEPARATOR;
   const alphabet = options.alphabet ?? DEFAULT_ALPHABET;
   const monotonic = options.monotonic ?? true;
@@ -127,7 +129,7 @@ export function createSortableId(options: SortableIdOptions = {}): IdGenerator {
   let lastTime = -1;
   let lastRandom: number[] = [];
 
-  return function sortableId<P extends string>(prefix: P): PrefixedId<P> {
+  return function sortableId<P extends string>(prefix: P): PrefixedId<P, S> {
     assertValidPrefix(prefix, separator);
 
     const reading = clock();
@@ -157,7 +159,7 @@ export function createSortableId(options: SortableIdOptions = {}): IdGenerator {
     let body = encodeTime(time, alphabet, timestampSize);
     for (let i = 0; i < randomSize; i++) body += alphabet[lastRandom[i]];
 
-    return `${prefix}${separator}${body}` as PrefixedId<P>;
+    return `${prefix}${separator}${body}` as PrefixedId<P, S>;
   };
 }
 
@@ -182,4 +184,25 @@ export function getTimestamp(
   if (body.length < timestampSize) return undefined;
 
   return decodeTime(body.slice(0, timestampSize), alphabet, timestampSize);
+}
+
+export function getTimestampOrThrow(
+  value: string,
+  options: GetTimestampOptions = {},
+): number {
+  const timestamp = getTimestamp(value, options);
+  if (timestamp === undefined) {
+    throw new TypeError(
+      `prefid: ${JSON.stringify(value)} is not a well-formed sortable id.`,
+    );
+  }
+  return timestamp;
+}
+
+export function getDate(
+  value: string,
+  options: GetTimestampOptions = {},
+): Date | undefined {
+  const timestamp = getTimestamp(value, options);
+  return timestamp === undefined ? undefined : new Date(timestamp);
 }

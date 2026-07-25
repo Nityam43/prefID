@@ -6,15 +6,15 @@ export interface TemplateOptions {
   alphabet?: string;
 }
 
-type RandomTemplate<P extends string> = P extends `${infer Head}#${string}`
-  ? `${Head}${string}`
-  : string;
+type RandomTemplate<
+  P extends string,
+  Ph extends string,
+> = P extends `${infer Head}${Ph}${string}` ? `${Head}${string}` : string;
 
-export function template<P extends string>(pattern: P): () => RandomTemplate<P>;
-export function template(
-  pattern: string,
-  options: TemplateOptions,
-): () => string;
+export function template<P extends string, Ph extends string = "#">(
+  pattern: P,
+  options?: TemplateOptions & { placeholder?: Ph },
+): () => RandomTemplate<P, Ph>;
 export function template(
   pattern: string,
   options: TemplateOptions = {},

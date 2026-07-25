@@ -33,7 +33,7 @@ UUIDv7, but keeping prefID's prefix and type. Great for database keys, cursors,
 and correlating logs, without a central sequence:
 
 ```ts
-import { sortableId, getTimestamp } from "prefid";
+import { sortableId, getTimestamp, getTimestampOrThrow, getDate } from "prefid";
 
 sortableId("evt"); // => "evt_00VQ5a1k0lBjgjfx6pwYy6WkY"
 sortableId("evt"); // => "evt_00VQ5a1mgkWGzAvv93g1bC3yR"  ← later, and sorts after
@@ -41,7 +41,10 @@ sortableId("evt"); // => "evt_00VQ5a1mgkWGzAvv93g1bC3yR"  ← later, and sorts a
 // IDs created in the same millisecond (or if the clock steps backwards) are
 // still strictly increasing — monotonic by default.
 
-getTimestamp("evt_00VQ5a1k0lBjgjfx6pwYy6WkY"); // => 1721600000000 (ms)
+// Read the embedded time back out:
+getTimestamp("evt_00VQ5a1k0lBjgjfx6pwYy6WkY"); // => 1721600000000 (ms), or undefined if malformed
+getTimestampOrThrow("evt_00VQ5a1k…"); // same, but throws on a malformed id instead of returning undefined
+getDate("evt_00VQ5a1k…"); // => Date, or undefined if malformed
 ```
 
 Prefer a case-insensitive, unambiguous alphabet (like ULID)? Use the exported
@@ -105,6 +108,7 @@ Full guides, examples, and the complete API live on the **[documentation site](h
 | [`id()`](https://prefid.vercel.app/docs/api/id) | The default generator |
 | [`createId()`](https://prefid.vercel.app/docs/api/create-id) | Configure size, separator, alphabet |
 | [`sortableId()`](https://prefid.vercel.app/docs/api/sortable-id) | Time-ordered IDs (ULID / UUIDv7-style) |
+| [`getTimestamp()` & `getDate()`](https://prefid.vercel.app/docs/api/sortable-id) | Read the time back out of a sortable ID (`getTimestampOrThrow` for a strict variant) |
 | [`template()`](https://prefid.vercel.app/docs/api/template) | Custom ID layouts (`INV-####-####`) |
 | [`ensureUnique()`](https://prefid.vercel.app/docs/api/ensure-unique) | Guarantee an ID is free in your store |
 | [`isId()` & `getPrefix()`](https://prefid.vercel.app/docs/api/validation) | Validate and read IDs |

@@ -4,8 +4,17 @@ import type { PrefixedId } from "../types/index.js";
 export function isId<P extends string>(
   value: unknown,
   prefix: P,
+): value is PrefixedId<P>;
+export function isId<P extends string, S extends string>(
+  value: unknown,
+  prefix: P,
+  separator: S,
+): value is PrefixedId<P, S>;
+export function isId(
+  value: unknown,
+  prefix: string,
   separator: string = DEFAULT_SEPARATOR,
-): value is PrefixedId<P> {
+): boolean {
   return typeof value === "string" && value.startsWith(`${prefix}${separator}`);
 }
 
