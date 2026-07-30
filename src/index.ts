@@ -9,7 +9,7 @@ export {
 } from "./generators/sortable.js";
 export { template } from "./generators/template.js";
 export { ensureUnique } from "./utils/ensure-unique.js";
-export { getPrefix, isId } from "./utils/validate.js";
+export { getPrefix, isId, parseId } from "./utils/validate.js";
 
 export type { IdGenerator, IdOptions, PrefixedId } from "./types/index.js";
 export type {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getPrefix, id, isId, type PrefixedId } from "../src/index.js";
+import { getPrefix, id, isId, parseId, type PrefixedId } from "../src/index.js";
 
 describe("isId()", () => {
   it("returns true for a matching prefix", () => {
@@ -53,5 +53,23 @@ describe("getPrefix()", () => {
 
   it("supports a custom separator", () => {
     expect(getPrefix("user.abc", ".")).toBe("user");
+  });
+});
+
+describe("parseId()", () => {
+  it("returns prefix and id for a valid prefixed ID", () => {
+    expect(parseId("user_abc123")).toEqual({ prefix: "user", id: "abc123" });
+  });
+
+  it("returns undefined when there is no separator", () => {
+    expect(parseId("noseparator")).toBeUndefined();
+  });
+
+  it("returns undefined when the separator is leading", () => {
+    expect(parseId("_abc")).toBeUndefined();
+  });
+
+  it("supports a custom separator", () => {
+    expect(parseId("user.abc", ".")).toEqual({ prefix: "user", id: "abc" });
   });
 });
