@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `parseId(id, separator?)` — parses a prefixed ID into `{ prefix, id }`. Returns `undefined` if the separator is missing or leading.
+
 ## [1.0.0] - 2026-07-25
 
 First stable release. The public API is now considered stable and follows
