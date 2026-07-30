@@ -25,3 +25,17 @@ export function getPrefix(
   const index = value.indexOf(separator);
   return index > 0 ? value.slice(0, index) : undefined;
 }
+
+export function parseId(
+  value: string,
+  separator: string = DEFAULT_SEPARATOR,
+): { prefix: string; id: string } | undefined {
+  const index = value.indexOf(separator);
+  if (index > 0) {
+    return {
+      prefix: value.slice(0, index),
+      id: value.slice(index + separator.length),
+    };
+  }
+  return undefined;
+}
