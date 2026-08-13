@@ -44,7 +44,7 @@ sortableId("evt"); // => "evt_00VQ5a1mgkWGzAvv93g1bC3yR"  ← later, and sorts a
 // Read the embedded time back out:
 getTimestamp("evt_00VQ5a1k0lBjgjfx6pwYy6WkY"); // => 1721600000000 (ms), or undefined if malformed
 getTimestampOrThrow("evt_00VQ5a1k…"); // same, but throws on a malformed id instead of returning undefined
-getDate("evt_00VQ5a1k…"); // => Date, or undefined if malformed
+getDate("evt_00VQ5a1k…"); // => Date, or undefined if malformed/out of range
 ```
 
 Prefer a case-insensitive, unambiguous alphabet (like ULID)? Use the exported

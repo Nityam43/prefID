@@ -348,4 +348,12 @@ describe("getDate()", () => {
     expect(getDate("nope")).toBeUndefined();
     expect(getDate("evt_")).toBeUndefined();
   });
+
+  it("returns undefined when the decoded timestamp is outside the Date range", () => {
+    expect(
+      getDate("evt_zzzzzzzzz000000000000000", {
+        timestampSize: 9,
+      }),
+    ).toBeUndefined();
+  });
 });
