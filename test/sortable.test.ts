@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { MAX_DATE_MS, SORTABLE_TIME_MAX } from "../src/constants/index.js";
 import {
   BASE32_CROCKFORD,
   createId,
@@ -355,5 +356,17 @@ describe("getDate()", () => {
         timestampSize: 9,
       }),
     ).toBeUndefined();
+  });
+
+  it("keeps every timestamp that survives getTimestamp inside the Date range", () => {
+    expect(SORTABLE_TIME_MAX).toBeLessThan(MAX_DATE_MS);
+  });
+
+  it("returns a Date exactly at the Date-range ceiling and undefined just past it", () => {
+    const at = (t: number) =>
+      createSortableId({ now: () => t, monotonic: false })("evt");
+
+    expect(getDate(at(MAX_DATE_MS))).toBeInstanceOf(Date);
+    expect(getDate(at(MAX_DATE_MS + 1))).toBeUndefined();
   });
 });
