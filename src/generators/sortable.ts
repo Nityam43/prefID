@@ -206,5 +206,7 @@ export function getDate(
 ): Date | undefined {
   const timestamp = getTimestamp(value, options);
   if (timestamp === undefined) return undefined;
-  return timestamp > MAX_DATE_MS ? undefined : new Date(timestamp);
+  return timestamp > MAX_DATE_MS || timestamp < -MAX_DATE_MS
+    ? undefined
+    : new Date(timestamp);
 }
