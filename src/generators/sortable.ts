@@ -204,5 +204,7 @@ export function getDate(
   options: GetTimestampOptions = {},
 ): Date | undefined {
   const timestamp = getTimestamp(value, options);
-  return timestamp === undefined ? undefined : new Date(timestamp);
+  if (timestamp === undefined) return undefined;
+  const date = new Date(timestamp);
+  return Number.isNaN(date.getTime()) ? undefined : date;
 }
