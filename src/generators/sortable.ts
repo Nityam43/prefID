@@ -2,6 +2,7 @@ import {
   DEFAULT_ALPHABET,
   DEFAULT_SEPARATOR,
   DEFAULT_SORTABLE_RANDOM_SIZE,
+  MAX_DATE_MS,
   MAX_SIZE,
   SORTABLE_TIME_MAX,
 } from "../constants/index.js";
@@ -205,6 +206,7 @@ export function getDate(
 ): Date | undefined {
   const timestamp = getTimestamp(value, options);
   if (timestamp === undefined) return undefined;
-  const date = new Date(timestamp);
-  return Number.isNaN(date.getTime()) ? undefined : date;
+  return timestamp > MAX_DATE_MS || timestamp < -MAX_DATE_MS
+    ? undefined
+    : new Date(timestamp);
 }
