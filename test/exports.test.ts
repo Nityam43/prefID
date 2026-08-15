@@ -11,6 +11,7 @@ type ExportBranch = {
   import?: string | ExportBranch;
   require?: string | ExportBranch;
   node?: ExportBranch;
+  browser?: string | ExportBranch;
 };
 
 test("each export condition names its own types file", () => {
@@ -25,6 +26,7 @@ test("each export condition names its own types file", () => {
 
   const nodeImport = rootExport.node?.import;
   const nodeRequire = rootExport.node?.require;
+  const browser = rootExport.browser;
   const esmImport = rootExport.import;
   const cjsRequire = rootExport.require;
 
@@ -35,6 +37,10 @@ test("each export condition names its own types file", () => {
   expect(nodeRequire).toEqual({
     types: "./dist/index.d.cts",
     default: "./dist/index.cjs",
+  });
+  expect(browser).toEqual({
+    types: "./dist/index.d.ts",
+    default: "./dist/index.js",
   });
   expect(esmImport).toEqual({
     types: "./dist/index.d.ts",

@@ -18,7 +18,10 @@
           "default": "./dist/index.cjs"
         }
       },
-      "browser": "./dist/index.js",
+      "browser": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -40,10 +43,11 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "smoke": "node scripts/smoke.mjs && node scripts/smoke.cjs",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.types-cjs.json",
+    "typecheck": "tsc --noEmit",
+    "typecheck:package": "tsc --noEmit -p tsconfig.types-cjs.json",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run typecheck:package"
   },
   "keywords": [
     "id",

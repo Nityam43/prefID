@@ -12,21 +12,23 @@ npm install
 
 ## Useful scripts
 
-| Script                  | What it does                                  |
-| ----------------------- | --------------------------------------------- |
-| `npm test`              | Run the test suite once.                      |
-| `npm run test:watch`    | Run tests in watch mode.                      |
-| `npm run test:coverage` | Run tests with a coverage report.             |
-| `npm run typecheck`     | Type-check without emitting output.           |
-| `npm run format`        | Format the codebase with Prettier.            |
-| `npm run format:check`  | Verify formatting (used in CI).               |
-| `npm run build`         | Build `dist/` with tsup.                      |
-| `npm run smoke`         | Run the ESM + CJS smoke tests (Node).         |
+| Script                      | What it does                                      |
+| --------------------------- | ------------------------------------------------- |
+| `npm test`                  | Run the test suite once.                          |
+| `npm run test:watch`        | Run tests in watch mode.                          |
+| `npm run test:coverage`     | Run tests with a coverage report.                 |
+| `npm run typecheck`         | Type-check source without emitting output.        |
+| `npm run typecheck:package` | Type-check the built package's CJS declarations.  |
+| `npm run format`            | Format the codebase with Prettier.                |
+| `npm run format:check`      | Verify formatting (used in CI).                   |
+| `npm run build`             | Build `dist/` with tsup.                          |
+| `npm run smoke`             | Run the ESM + CJS smoke tests (Node).             |
 
 ## Before you open a pull request
 
 1. Add or update tests for your change.
-2. Run `npm run format`, `npm run typecheck`, and `npm test` — all must pass.
+2. Run `npm run format`, `npm run typecheck`, `npm test`, `npm run build`, and
+   `npm run typecheck:package` — all must pass.
 3. Keep the package **dependency-free** (nothing in `dependencies`).
 4. Update `CHANGELOG.md` under the `Unreleased` heading.
 

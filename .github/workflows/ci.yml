@@ -23,6 +23,7 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - run: npm run typecheck:package
 
       # Smoke-test the built package on every modern Node version, ESM + CJS.
       - run: npm run smoke
