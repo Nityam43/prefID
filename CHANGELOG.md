@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `getDate(id, options?)` now returns `undefined` when a decoded timestamp is outside JavaScript's valid `Date` range.
+- CJS consumers no longer receive ESM type declarations. Each `exports` condition now names its own `.d.ts` / `.d.cts` file so `moduleResolution: node16` `require("prefid")` resolves CommonJS types.
 
 ## [1.0.0] - 2026-07-25
 
