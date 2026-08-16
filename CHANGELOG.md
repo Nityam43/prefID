@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-08-16
+
 ### Added
 
 - `parseId(id, separator?)` — parses a prefixed ID into `{ prefix, id }`. Returns `undefined` if the separator is missing or leading.
@@ -15,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `getDate(id, options?)` now returns `undefined` when a decoded timestamp is outside JavaScript's valid `Date` range.
 - CJS consumers no longer receive ESM type declarations. Each `exports` condition now names its own `.d.ts` / `.d.cts` file so `moduleResolution: node16` `require("prefid")` resolves CommonJS types.
+
+## [1.0.1] - 2026-07-25
+
+### Fixed
+
+- `./package.json` is now reachable through the `exports` map, so tooling that reads it (bundlers, `publint`, package managers) no longer fails to resolve it.
 
 ## [1.0.0] - 2026-07-25
 
@@ -140,7 +148,9 @@ will only ship in a new major version.
 - Cryptographically secure random source with unbiased sampling and a Node
   `crypto` fallback for runtimes without the Web Crypto global.
 
-[Unreleased]: https://github.com/suhailopensource/prefID/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/suhailopensource/prefID/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/suhailopensource/prefID/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/suhailopensource/prefID/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/suhailopensource/prefID/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/suhailopensource/prefID/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/suhailopensource/prefID/compare/v0.2.0...v0.3.0
