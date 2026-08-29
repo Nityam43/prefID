@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `getPrefix(value, separator?)` and `parseId(value, separator?)` now return `undefined` for non-string input instead of throwing, matching `isId` and `getTimestamp`.
 
+### Fixed
+- `parseId()` now returns `undefined` when the ID body following the separator is empty (e.g., `"user_"`).
+
 ## [1.1.0] - 2026-08-16
 
 ### Added
