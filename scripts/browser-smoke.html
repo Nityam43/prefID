@@ -12,24 +12,29 @@
         padding: 2rem;
         line-height: 1.6;
       }
+
       #status {
         font-size: 1.25rem;
         font-weight: bold;
       }
+
       pre {
         background: #1e293b;
         padding: 1rem;
         border-radius: 0.5rem;
         overflow-x: auto;
       }
+
       .ok {
         color: #4ade80;
       }
+
       .fail {
         color: #f87171;
       }
     </style>
   </head>
+
   <body>
     <div id="status">Running…</div>
     <pre id="output"></pre>
@@ -42,6 +47,7 @@
         getTimestamp,
         id,
         isId,
+        parseId,
         sortableId,
         template,
       } from "../dist/index.js";
@@ -56,6 +62,25 @@
         if (!isId(uid, "user")) throw new Error("id() failed");
         lines.push(`id("user")            -> ${uid}`);
         lines.push(`getPrefix(...)        -> ${getPrefix(uid)}`);
+
+        const parsed = parseId(uid);
+        if (
+          !parsed ||
+          parsed.prefix !== "user" ||
+          parsed.id !== uid.substring(5)
+        ) {
+          throw new Error("parseId() round-trip failed");
+        }
+        if (parseId("nosep") !== undefined) {
+          throw new Error("parseId() nosep failed");
+        }
+        if (parseId(null) !== undefined) {
+          throw new Error("parseId() null failed");
+        }
+        lines.push(
+          `parseId(...)          -> { prefix: "${parsed.prefix}", id: "${parsed.id}" }`,
+        );
+
         lines.push(
           `createId({ size: 8 }) -> ${createId({ size: 8 })("order")}`,
         );
