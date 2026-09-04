@@ -19,9 +19,9 @@ jobs:
       contents: write # required to create the GitHub Release
       id-token: write # required for OIDC trusted publishing + provenance
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e5e7e5cb8ba370d0fd4af275210e7561f5f2420 # v7.0.1
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@8f152de45cc393fbc8c65d3ce71a8cf9c420eb22 # v7.0.0
         with:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
@@ -42,6 +42,6 @@ jobs:
 
       # Create a GitHub Release for the pushed tag, with auto-generated notes.
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c0fd27d560828206c9e0166299b66236b33b0005 # v2
         with:
           generate_release_notes: true

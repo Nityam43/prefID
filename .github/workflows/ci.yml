@@ -13,10 +13,10 @@ jobs:
       matrix:
         node-version: [18, 20, 22, 24]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@8e5e7e5cb8ba370d0fd4af275210e7561f5f2420 # v7.0.1
+      - uses: actions/setup-node@8f152de45cc393fbc8c65d3ce71a8cf9c420eb22 # v7.0.0
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "${{ matrix.node-version }}"
           cache: npm
       - run: npm ci
       - run: npm run format:check
@@ -39,36 +39,36 @@ jobs:
       matrix:
         node-version: ["14.18", "16"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@8e5e7e5cb8ba370d0fd4af275210e7561f5f2420 # v7.0.1
+      - uses: actions/setup-node@8f152de45cc393fbc8c65d3ce71a8cf9c420eb22 # v7.0.0
         with:
           node-version: 20
           cache: npm
       - run: npm ci
       - run: npm run build
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@8f152de45cc393fbc8c65d3ce71a8cf9c420eb22 # v7.0.0
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "${{ matrix.node-version }}"
       - name: Smoke (ESM + CJS)
         run: node scripts/smoke.mjs && node scripts/smoke.cjs
 
   runtimes:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@8e5e7e5cb8ba370d0fd4af275210e7561f5f2420 # v7.0.1
+      - uses: actions/setup-node@8f152de45cc393fbc8c65d3ce71a8cf9c420eb22 # v7.0.0
         with:
           node-version: 20
           cache: npm
       - run: npm ci
       - run: npm run build
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@4bc783f98242b13ed7dc6bb9bc31bbceb06ce714 # v2
       - name: Bun
         run: bun scripts/smoke.mjs
 
-      - uses: denoland/setup-deno@v2
+      - uses: denoland/setup-deno@ebf10edef77df76f494fb57a0774a961f77041a9 # v2
         with:
           deno-version: v2.x
       - name: Deno
